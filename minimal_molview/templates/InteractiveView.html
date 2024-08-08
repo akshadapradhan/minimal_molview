@@ -17,14 +17,32 @@
 <script>
     let element = document.querySelector('#container-01');
     let config = { backgroundColor: 'white' };
-    let viewer = $3Dmol.createViewer( element, config );
+    let viewer = $3Dmol.createViewer(element, config);
+
+    // Load the PDB model
     var pdb = `{{ PDB_INSERT }}`;
-    viewer.addModel(pdb, "pdb")
-    // make cartoon style
-    viewer.setStyle({cartoon: {color: 'spectrum'}});
-    //viewer.setStyle({model: 0}, {stick: {colorscheme: "whiteCarbon", radius:0.15}});
-    viewer.setStyle({hetflag: true}, {stick: {colorscheme: "greenCarbon", radius:0.25}}); //heteroatoms
-    viewer.setStyle({bonds: 0}, {sphere:{radius:0.5}}); //water molecules
+    viewer.addModel(pdb, "pdb");
+
+    // Style for residue 140 in red
+    viewer.setStyle({resi: '140'}, {cartoon: {color: 'red'}});
+
+    // Label for residue 140
+    viewer.addLabel('140', {
+        position: 'center',
+        backgroundOpacity: 0.8,
+        fontSize: 12,
+        color: 'red',
+        showBackground: true
+    }, {resi: '140'});
+
+    // Style for all other residues in gray
+    viewer.setStyle({resi: '!140'}, {cartoon: {color: 'gray'}});
+
+    // Additional styling and configurations
+    viewer.setStyle({hetflag: true}, {stick: {colorscheme: "greenCarbon", radius: 0.25}}); // Heteroatoms
+    viewer.setStyle({bonds: 0}, {sphere: {radius: 0.5}}); // Water molecules
+
+    // Zoom and render
     viewer.zoomTo();
     viewer.render();
 </script>
